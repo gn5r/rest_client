@@ -1,10 +1,11 @@
 <template>
-  <v-footer height="auto" color="primary" :fixed="fixed">
-    <v-layout justify-center row wrap>
-      <v-flex>
-        <div>&copy; shangyuan.tuolang</div>
-      </v-flex>
-    </v-layout>
+  <v-footer height="auto" :fixed="fixed">
+    <v-toolbar color="primary" dark>
+      <v-spacer />
+      <v-toolbar-title>
+        <v-spacer />&copy; shangyuan.tuolang
+      </v-toolbar-title>
+    </v-toolbar>
   </v-footer>
 </template>
 

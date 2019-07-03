@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar>
+  <v-toolbar color="primary" dark>
     <v-toolbar-title>サンプルアプリケーション</v-toolbar-title>
   </v-toolbar>
 </template>

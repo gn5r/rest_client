@@ -4,7 +4,7 @@
       <v-card-title class="pa-0 ma-0">
         <v-toolbar card dark color="primary">
           <v-toolbar-title>設定ダイアログ</v-toolbar-title>
-          <v-spacer/>
+          <v-spacer />
           <v-btn icon dark @click="close">
             <v-icon>close</v-icon>
           </v-btn>
@@ -51,7 +51,7 @@
             </v-flex>
           </v-layout>
           <v-layout align-baseline text-xs-right>
-            <v-spacer/>
+            <v-spacer />
             <v-btn icon @click="submit">
               <v-icon color="success">fas fa-user-plus</v-icon>
             </v-btn>
@@ -115,7 +115,6 @@ export default {
     /** データの送信 */
     async postDetail() {
       try {
-        console.log(this.accountDetail);
         const uri = "account/create";
         await rest.post(uri, this.accountDetail);
       } catch (error) {

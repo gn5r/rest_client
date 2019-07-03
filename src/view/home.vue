@@ -1,36 +1,31 @@
 <template>
-  <v-container fluid class="pa-0 ma-0" style="min-height:100%">
-    <v-header></v-header>
-
-    <v-layout justify-center align-content-center align-baseline row wrap>
-      <v-spacer/>
-      <v-flex text-xs-right>
-        <v-btn icon @click.stop="openEditDialog('add')">
-          <v-icon color="success">fas fa-user-plus</v-icon>
-        </v-btn>
-      </v-flex>
-    </v-layout>
+  <v-container fluid class="pa-0 ma-0">
+    <v-header />
 
     <v-card>
       <v-card-text>
+        <v-layout justify-center align-content-center align-baseline row wrap>
+          <v-spacer />
+          <v-flex text-xs-right>
+            <v-btn icon @click.stop="openEditDialog('add')">
+              <v-icon color="success">fas fa-user-plus</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+
         <v-layout justify-center column wrap>
-          <v-flex class="my-2">
-            <v-data-table
-              :headers="headers"
-              :items="details"
-              :pagination.sync="pagination"
-              class="elevation-1"
-            >
+          <v-flex>
+            <v-data-table :headers="headers" :items="details" class="elevation-1">
               <template v-slot:items="props">
                 <td class="text-xs-center">{{ props.item.id }}</td>
                 <td class="text-xs-center">{{ props.item.username }}</td>
                 <td class="text-xs-center">{{ props.item.modified | moment }}</td>
                 <td class="text-xs-center">{{ props.item.divCD }}</td>
                 <td class="text-xs-center">
-                  <v-btn icon dark @click.stop="openEditDialog('edit')">
+                  <v-btn icon @click.stop="openEditDialog('edit')">
                     <v-icon color="primary">fas fa-edit</v-icon>
                   </v-btn>
-                  <v-btn icon dark @click="deleteAccount(props.item.id)">
+                  <v-btn icon @click="deleteAccount(props.item.id)">
                     <v-icon color="error">fas fa-trash-alt</v-icon>
                   </v-btn>
                 </td>
@@ -45,7 +40,7 @@
         </v-layout>
       </v-card-text>
     </v-card>
-    <v2-footer class="v2-footer"/>
+    <v2-footer class="v2-footer" />
   </v-container>
 </template>
 
