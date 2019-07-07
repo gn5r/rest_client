@@ -5,7 +5,7 @@
     <v-layout justify-center align-content-center align-baseline row wrap>
       <v-spacer />
       <v-flex text-xs-right>
-        <v-btn icon @click.stop="openEditDialog('add')">
+        <v-btn icon @click.stop="openEditDialog('add',null)">
           <v-icon color="success">fas fa-user-plus</v-icon>
         </v-btn>
       </v-flex>
@@ -27,7 +27,7 @@
                 <td class="text-xs-center">{{ props.item.modified | moment }}</td>
                 <td class="text-xs-center">{{ props.item.divCD }}</td>
                 <td class="text-xs-center">
-                  <v-btn icon @click.stop="openEditDialog('edit')">
+                  <v-btn icon @click.stop="openEditDialog('edit',props.item.id)">
                     <v-icon color="primary">fas fa-edit</v-icon>
                   </v-btn>
                   <v-btn icon @click="deleteAccount(props.item.id)">
@@ -40,6 +40,7 @@
           <account-edit-dialog
             :dialog="this.editDialog"
             :editType="this.editType"
+            :id="parseInt(this.accountID)"
             @close="closeEditDialog"
           />
         </v-layout>
@@ -59,8 +60,11 @@ import AccountEditDialog from "@/dialog/AccountEditDialog";
 
 export default {
   data: () => ({
+    //ダイアログ関係
     editDialog: false,
     editType: null,
+    accountID: null,
+
     //ページング
     pagination: {},
     //ローディング
@@ -106,9 +110,7 @@ export default {
 
       try {
         const uri = "account/list";
-        this.details = await rest.get(uri).then(res => {
-          return res.data;
-        });
+        this.details = await rest.get(uri);
         this.loading = false;
       } catch (err) {
         alert("一覧取得に失敗しました" + err);
@@ -126,9 +128,10 @@ export default {
     },
 
     /** ダイアログを開く */
-    openEditDialog(type) {
+    openEditDialog(type, id) {
       this.editDialog = !this.editDialog;
       this.editType = type;
+      this.accountID = id;
     },
 
     /** ダイアログが閉じたとき */

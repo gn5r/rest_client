@@ -13,11 +13,11 @@ const axios = axiosBase.create({
  * @param {String} url
  */
 export function get(url) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios
       .get(url)
-      .then(function(response) {
-        resolve(response);
+      .then(function (response) {
+        resolve(response.data);
       })
       .catch(error => {
         reject(error);
@@ -31,11 +31,11 @@ export function get(url) {
  * @param {json} data
  */
 export function post(url, data) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios
       .post(url, data)
-      .then(function(response) {
-        resolve(response);
+      .then(function (response) {
+        resolve(response.data);
       })
       .catch(error => {
         reject(error);
@@ -49,11 +49,11 @@ export function post(url, data) {
  * @param {json} data
  */
 export function put(url, data) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios
       .put(url, data)
-      .then(function(response) {
-        resolve(response);
+      .then(function (response) {
+        resolve(response.data);
       })
       .catch(error => {
         reject(error);
@@ -66,11 +66,11 @@ export function put(url, data) {
  * @param {String} url
  */
 export function del(url) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios
       .delete(url)
-      .then(function(response) {
-        resolve(response);
+      .then(function (response) {
+        resolve(response.data);
       })
       .catch(error => {
         reject(error);

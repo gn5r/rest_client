@@ -19,11 +19,11 @@
               </v-flex>
               <v-flex xs4>
                 <v-text-field
+                  :value="accountDetail.username"
+                  @input="inputAccountName"
                   ref="user"
-                  :input-value="accountDetail.username"
                   label="アカウント名を入力"
                   solo
-                  @input="inputAccountName"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -35,7 +35,7 @@
               <v-flex xs4>
                 <v-text-field
                   ref="accountID"
-                  :input-value="accountDetail.id"
+                  :value="accountDetail.id"
                   label="アカウントIDを入力"
                   solo
                   @input="inputAccountID"
@@ -50,7 +50,7 @@
                   item-value="id"
                   label="部署CD"
                   solo
-                  :input-value="accountDetail.divCD"
+                  :value="accountDetail.divCD"
                   @change="getDivListItem"
                 />
               </v-flex>
@@ -80,6 +80,10 @@ export default {
     editType: {
       type: String,
       default: null
+    },
+    id: {
+      type: Number,
+      default: 0
     }
   },
   data: () => ({
@@ -117,21 +121,30 @@ export default {
     /** 部署テーブルからリストを取得 */
     async getDivList() {
       const uri = "cmn/div/list";
-      await rest.get(uri).then(res => {
-        this.divList = res.data;
-      });
+      this.divList = await rest.get(uri);
     },
     /** 部署リスト選択 */
     getDivListItem(id) {
       this.accountDetail.divCD = id;
     },
 
+    /** アカウント情報を取得 */
+    async getDetailById() {
+      try {
+        const uri = `account/details/${this.id}`;
+        this.accountDetail = await rest.get(uri);
+      } catch (err) {
+        alert("アカウント情報を取得できませんでした" + err);
+      }
+    },
+
     /** データの送信 */
     async postDetail() {
       try {
         const uri = "account/create";
-        await rest.post(uri, this.accountDetail);
-        return true;
+        const result = await rest.post(uri, this.accountDetail);
+        if (result != null) return true;
+        else return false;
       } catch (error) {
         alert("新規登録ができませんでした" + error);
         return false;
@@ -140,11 +153,16 @@ export default {
   },
   watch: {
     dialog(val) {
+      this.accountDetail = {};
       this.editDialog = !this.editDialog;
       this.$nextTick(() => this.$refs.user.focus());
       if (val) {
-        this.accountDetail = {};
         this.getDivList();
+        if (this.editType == "edit") {
+          this.getDetailById().then(() => {
+            console.log(this.accountDetail);
+          });
+        }
       }
     }
   }
