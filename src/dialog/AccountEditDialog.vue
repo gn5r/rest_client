@@ -34,10 +34,12 @@
               </v-flex>
               <v-flex xs4>
                 <v-text-field
+                  ref="accountID"
                   :input-value="accountDetail.id"
                   label="アカウントIDを入力"
                   solo
                   @input="inputAccountID"
+                  :rules="requiredRule"
                   required
                 />
               </v-flex>
@@ -83,7 +85,9 @@ export default {
   data: () => ({
     editDialog: false,
     accountDetail: { id: "", username: "", divCD: "" },
-    divList: []
+    divList: [],
+    //必須入力ルール
+    requiredRule: [v => !!v || `アカウントIDは必須です`]
   }),
   methods: {
     /** 送信ボタン押下時 */
@@ -93,6 +97,8 @@ export default {
         if (result) {
           this.$emit("close");
         }
+      } else {
+        this.$nextTick(() => this.$refs.accountID.focus());
       }
     },
 
@@ -130,16 +136,15 @@ export default {
         alert("新規登録ができませんでした" + error);
         return false;
       }
-    },
-    openEditDialog() {}
+    }
   },
   watch: {
     dialog(val) {
       this.editDialog = !this.editDialog;
-      this.accountDetail = {};
+      this.$nextTick(() => this.$refs.user.focus());
       if (val) {
+        this.accountDetail = {};
         this.getDivList();
-        this.$nextTick(() => this.$refs.user.focus());
       }
     }
   }
