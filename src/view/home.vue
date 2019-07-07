@@ -2,17 +2,17 @@
   <v-container fluid class="pa-0 ma-0">
     <v-header />
 
-    <v-card>
-      <v-card-text>
-        <v-layout justify-center align-content-center align-baseline row wrap>
-          <v-spacer />
-          <v-flex text-xs-right>
-            <v-btn icon @click.stop="openEditDialog('add')">
-              <v-icon color="success">fas fa-user-plus</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
+    <v-layout justify-center align-content-center align-baseline row wrap>
+      <v-spacer />
+      <v-flex text-xs-right>
+        <v-btn icon @click.stop="openEditDialog('add')">
+          <v-icon color="success">fas fa-user-plus</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
 
+    <v-card>
+      <v-card-text class="pa-0 ma-0">
         <v-layout justify-center column wrap>
           <v-flex>
             <v-data-table

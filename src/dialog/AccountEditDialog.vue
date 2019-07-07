@@ -19,11 +19,12 @@
               </v-flex>
               <v-flex xs4>
                 <v-text-field
+                  ref="user"
                   :input-value="accountDetail.username"
                   label="アカウント名を入力"
                   solo
                   @input="inputAccountName"
-                />
+                ></v-text-field>
               </v-flex>
             </v-layout>
 
@@ -129,14 +130,16 @@ export default {
         alert("新規登録ができませんでした" + error);
         return false;
       }
-    }
+    },
+    openEditDialog() {}
   },
   watch: {
-    dialog() {
+    dialog(val) {
       this.editDialog = !this.editDialog;
       this.accountDetail = {};
-      if (this.dialog) {
+      if (val) {
         this.getDivList();
+        this.$nextTick(() => this.$refs.user.focus());
       }
     }
   }
