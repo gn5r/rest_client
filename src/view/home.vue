@@ -15,7 +15,12 @@
 
         <v-layout justify-center column wrap>
           <v-flex>
-            <v-data-table :headers="headers" :items="details" class="elevation-1">
+            <v-data-table
+              :headers="headers"
+              :items="details"
+              :loading="loading"
+              class="elevation-1"
+            >
               <template v-slot:items="props">
                 <td class="text-xs-center">{{ props.item.id }}</td>
                 <td class="text-xs-center">{{ props.item.username }}</td>
@@ -58,6 +63,8 @@ export default {
     editType: null,
     //ページング
     pagination: {},
+    //ローディング
+    loading: true,
     //APIからアカウント情報を格納
     details: [],
     //部署情報を格納
@@ -95,10 +102,17 @@ export default {
   methods: {
     /** アカウント情報テーブルから全件を取得する */
     async getDetails() {
-      const uri = "account/list";
-      await rest.get(uri).then(res => {
-        this.details = res.data;
-      });
+      if (!this.loading) this.loading = true;
+
+      try {
+        const uri = "account/list";
+        this.details = await rest.get(uri).then(res => {
+          return res.data;
+        });
+        this.loading = false;
+      } catch (err) {
+        alert("一覧取得に失敗しました" + err);
+      }
     },
 
     /** 部署テーブルから一覧を取得 */
@@ -118,9 +132,9 @@ export default {
     },
 
     /** ダイアログが閉じたとき */
-    async closeEditDialog() {
+    closeEditDialog() {
       this.editDialog = !this.editDialog;
-      await this.getDetails();
+      this.getDetails();
     },
 
     /** 削除アイコンを押したとき */
@@ -149,7 +163,6 @@ export default {
   },
 
   created() {
-    this.getDivList();
     this.getDetails();
   },
 

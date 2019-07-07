@@ -12,50 +12,53 @@
       </v-card-title>
       <v-card-text class="pa-0 ma-0">
         <v-container fluid>
-          <v-layout align-baseline text-xs-center row wrap>
-            <v-flex xs3>
-              <span>アカウント名</span>
-            </v-flex>
-            <v-flex xs4>
-              <v-text-field
-                :input-value="accountDetail.username"
-                label="アカウント名を入力"
-                solo
-                @input="inputAccountName"
-              />
-            </v-flex>
-          </v-layout>
+          <v-form ref="form" lazy-validation>
+            <v-layout align-baseline text-xs-center row wrap>
+              <v-flex xs3>
+                <span>アカウント名</span>
+              </v-flex>
+              <v-flex xs4>
+                <v-text-field
+                  :input-value="accountDetail.username"
+                  label="アカウント名を入力"
+                  solo
+                  @input="inputAccountName"
+                />
+              </v-flex>
+            </v-layout>
 
-          <v-layout align-baseline text-xs-center row wrap>
-            <v-flex xs3>
-              <span>アカウントID</span>
-            </v-flex>
-            <v-flex xs4>
-              <v-text-field
-                :input-value="accountDetail.id"
-                label="アカウントIDを入力"
-                solo
-                @input="inputAccountID"
-              />
-            </v-flex>
-            <v-flex xs3 class="ml-4">
-              <v-select
-                :items="divList"
-                item-text="value"
-                item-value="id"
-                label="部署CD"
-                solo
-                :input-value="accountDetail.divCD"
-                @change="getDivListItem"
-              />
-            </v-flex>
-          </v-layout>
-          <v-layout align-baseline text-xs-right>
-            <v-spacer />
-            <v-btn icon @click="submit">
-              <v-icon color="success">fas fa-user-plus</v-icon>
-            </v-btn>
-          </v-layout>
+            <v-layout align-baseline text-xs-center row wrap>
+              <v-flex xs3>
+                <span>アカウントID</span>
+              </v-flex>
+              <v-flex xs4>
+                <v-text-field
+                  :input-value="accountDetail.id"
+                  label="アカウントIDを入力"
+                  solo
+                  @input="inputAccountID"
+                  required
+                />
+              </v-flex>
+              <v-flex xs3 class="ml-4">
+                <v-select
+                  :items="divList"
+                  item-text="value"
+                  item-value="id"
+                  label="部署CD"
+                  solo
+                  :input-value="accountDetail.divCD"
+                  @change="getDivListItem"
+                />
+              </v-flex>
+            </v-layout>
+            <v-layout align-baseline text-xs-right>
+              <v-spacer />
+              <v-btn icon @click="submit">
+                <v-icon color="success">fas fa-user-plus</v-icon>
+              </v-btn>
+            </v-layout>
+          </v-form>
         </v-container>
       </v-card-text>
     </v-card>
@@ -83,9 +86,13 @@ export default {
   }),
   methods: {
     /** 送信ボタン押下時 */
-    submit() {
-      this.postDetail();
-      this.$emit("close");
+    async submit() {
+      if (this.$refs.form.validate()) {
+        const result = await this.postDetail();
+        if (result) {
+          this.$emit("close");
+        }
+      }
     },
 
     /** xボタン押下時 */
@@ -117,8 +124,10 @@ export default {
       try {
         const uri = "account/create";
         await rest.post(uri, this.accountDetail);
+        return true;
       } catch (error) {
-        alert("新規登録ができませんでした");
+        alert("新規登録ができませんでした" + error);
+        return false;
       }
     }
   },

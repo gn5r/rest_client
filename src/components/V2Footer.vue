@@ -1,11 +1,7 @@
 <template>
-  <v-footer height="auto" :fixed="fixed">
-    <v-toolbar color="primary" dark>
-      <v-spacer />
-      <v-toolbar-title>
-        <v-spacer />&copy; shangyuan.tuolang
-      </v-toolbar-title>
-    </v-toolbar>
+  <v-footer height="auto" fixed="fixed" dark app color="primary">
+    <v-spacer />
+    <div>&copy; shangyuan.tuolang</div>
   </v-footer>
 </template>
 
@@ -16,10 +12,5 @@ export default {
 </script>
 
 <style scoped>
-.v-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
 </style>
 
